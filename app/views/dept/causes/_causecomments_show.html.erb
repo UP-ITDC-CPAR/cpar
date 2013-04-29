@@ -1,0 +1,45 @@
+<div class="row">
+<div class="span6">
+	<div class="row">
+		<div class="span3">
+		<%= form_for [:dept, @cause_comment] do |f| %>
+			<%= f.hidden_field :cause_id, value: @cause.id %>
+			<%= f.hidden_field :user_id, value: current_user.id %>
+			<%= f.text_area :content, size: "30x5" %>
+			<%= f.submit "Add Comment", class: "btn btn-small btn-primary" %>
+		<% end %>
+		<h4>Cause Updates:</h4>
+		<hr>
+		<% if @cause_updates.any? %>
+			<% @cause_updates.each do |cu| %>
+				<%= cu.created_at.strftime("%b %d, %Y | %H:%M") %>
+				<p>	<%= cu.content %>
+				</p>
+			<% end %>
+		<% end %>
+		<%= will_paginate @cause_updates %>
+		</div>
+		<div class="span3">
+		<h4>Comments:</h4>
+		<hr>
+		<% if @cause_comments.any? %>
+			<% @cause_comments.each do |cc| %>
+				<%= cc.created_at.strftime("%b %d, %Y | %H:%M") %>
+				<% cc_user=User.find(cc.user_id) %>
+				<p><b><%= cc_user.name + ":" %></b>
+				  <% if cc_user.type_id != 6 %>
+				  	<%= "("+UserType.find(cc_user.type_id).name + ")" %>
+				  <% end %>
+				</p>
+				<p>	<%= cc.content %>
+				</p>
+				<% if current_user.admin %>
+					<p><%= link_to "delete", cc, method: :delete, confirm: "Are you sure you want to delete this comment?" %></p>
+				<% end %>
+			<% end %>
+		<% end %>
+		<%= will_paginate @cause_comments %>
+		</div>
+	</div>
+</div>
+</div>

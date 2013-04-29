@@ -1,0 +1,14 @@
+<% provide(:title, 'Edit Activity') %>
+<h1>Edit Activity</h1>
+
+<%= form_for [:dept, @action_plan, @activity] do |f2| %>
+    <p><b> For Action Plan:</b> <%= @action_plan.description %></p>
+    <%= f2.label :description %>
+    <!--Use :result field as description field for Action Plan while not yet finished-->
+    <%= f2.text_area :result %>
+    
+    <%= f2.label :target_date %>
+    <input type="date" id="date_issued" value= "<%= @activity.target_date %>" disabled>
+
+    <%= f2.submit "Save Edits to Activity", class: "btn btn-primary" %>
+<% end %>

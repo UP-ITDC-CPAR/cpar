@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1><%= @msgtitle %></h1>
+    <p>
+      Hello, Web CPAR User <b><%= @user.name %></b>! You have received this email because you are subscribed to Web CPAR Application and received this as a notification email. 
+    </p>
+    <br>
+    <hr>
+    <p><%= @content %></p>
+    <br>
+    <hr>
+    <p>
+      To login to the site, just follow this link: <p><%= link_to "Sign In", signin_url %></p>.
+    </p>
+  </body>
+</html> 

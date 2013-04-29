@@ -1,0 +1,107 @@
+<% provide(:title, 'Show Issue') %>
+<div class="row">
+  <div class="span6">
+    <p id="notice"> <%= notice %> </p>
+ 
+    <h3>
+      <!--<b>Title:</b> Use this instead for header-->
+      <%= @issue.title %>
+    </h3>
+
+    <p>
+      <b>Status:</b>
+      <%= @issue.issue_status.name %>
+    </p>
+
+    <p>
+      <b>Estimated Closeout Date:</b>
+      <%= @issue.estimated_closeout_date %>
+    </p>
+
+    <% if @issue.closeout_forms.count == 1 && @issue.status_id == 5 %>
+      <p>Closeout form started, View it in details. </p>
+    <% end %>
+
+    <hr>
+
+    <h4>Issue Details</h4>
+
+    <p>
+      <b>Description:</b>
+      <%= @issue.description %>
+    </p>
+ 
+    <p>
+      <b>Originator:</b>
+      <%= @issue.user.name %>
+    </p>
+
+    <p>
+      <b>Originator Email:</b>
+      <%= @issue.user.email %>
+    </p>
+
+    <p>
+      <b>Departments:</b>
+      <%= @issue.department.name %>
+      <% if @issue.next_responsible_departments.any? %>
+        <% @issue.next_responsible_departments.each do |nrd| %>
+          <%= ", "+ Department.where(id: nrd.department_id).first.name %>
+          <!--+ " (" + nrd.responsibility_level.to_s + ")"-->
+        <% end %>
+      <% end %>
+    </p>
+
+    <p>
+      <b>Type:</b>
+      <%= @issue.issue_type.name %>
+    </p>
+ 
+    <p>
+      <b>Impact:</b>
+      <% if @issue.impact_id == 1 %>
+        <span class="label label-important"><%= @issue.issue_impact.name %></spn>
+      <% elsif @issue.impact_id == 2 %>
+        <span class="label label-warning"><%= @issue.issue_impact.name %></spn>
+      <% else %>
+        <span class="label label-info"><%= @issue.issue_impact.name %></spn>
+      <% end %>
+    </p>
+
+    <p>
+      <b>ISO Reference ID:</b>
+      <%= @issue.iso_nc.title %>
+    </p>
+
+    <p>
+        <b>Assigned Officer: </b> 
+        <% if @issue.responsible_officer_id != nil %>
+          <%= User.find(@issue.responsible_officer_id).name %>
+        <% else %>
+          None
+        <% end %>
+    </p>
+    <%= link_to 'Show Details', details_officer_issue_path, class: "btn btn-primary" %>
+    <%= link_to 'Back', officer_issues_path, class: "btn btn-primary" %>
+    <hr>
+    <%= render 'attachedfiles_show' %>
+  </div>
+  <%= render 'comments_show' %>
+  <div class="span9">
+    <hr>
+    <%= render 'causes_show' %>
+    <% if @issue.found_officer(current_user.id) %>
+      <%= link_to 'Add Cause', new_officer_issue_cause_path(@issue) , class: "btn btn-small btn-primary" %>
+    <% end %>
+    <%= render 'actionplans_show' %>
+    <% if @issue.found_officer(current_user.id) %>
+      <% if @issue.causes.where("user_id = ?", current_user.id).empty? %>
+        Add a Cause above first before adding an Action Plan
+      <% else %>
+        <%= link_to 'Add New Action Plan', new_officer_action_plan_path(issue_id: @issue.id), class: "btn btn-small btn-primary" %>
+      <% end %>
+    <% end %>
+    
+  </div>
+
+</div>

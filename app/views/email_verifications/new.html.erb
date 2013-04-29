@@ -1,0 +1,10 @@
+<% provide(:title, 'Resend Verification Email') %>
+<h1>Resend Verification Email</h1>
+
+<%= form_tag email_verifications_path, :method => :post do %>
+  <div class="field">
+    <%= label_tag :email %>
+    <%= text_field_tag :email, params[:email] %>
+  </div>
+  <div class="actions"><%= submit_tag "Resend Verification Email" %></div>
+<% end %>

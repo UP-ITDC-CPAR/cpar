@@ -1,0 +1,14 @@
+<% provide(:title, 'Edit Action Plan') %>
+<h1>Edit Action Plan</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for([:dept, @action_plan]) do |f| %>
+      <h2>Edit Action Plan Fields</h2>
+      <%= f.label :description %>
+      <%= f.text_area :description %>
+
+      <%= f.submit "Save Action Plan", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

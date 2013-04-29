@@ -1,0 +1,2 @@
+module Auditor::IssuesHelper
+end

@@ -1,0 +1,55 @@
+<% provide(:title, "Showing Action Plan") %>
+<h1>Dept as Officer: Showing Action Plan</h1>
+
+<div class="row">
+  <div class="span6">
+  		<p><strong>Action Plan Status: </strong><i><%= ActionPlanStatus.find(@action_plan.ap_status_id).name %></i></p>
+  		<p>
+  		<% if @action_plan.ap_status_id == 1 %>
+			<strong>This Action plan has not yet been reviewed.</strong>
+		<% else %>
+			<strong>This Action plan has been reviewed by:</strong>
+				<% if @action_plan.ap_reviewer_id != nil %>
+					<%= User.find(@action_plan.ap_reviewer_id).name %>
+				<% end %>
+		<% end %>
+		</p>
+		<p><strong>Assigned Officer:</strong>
+		<% if @action_plan.responsible_officer_id != nil %>
+			<%= User.find(@action_plan.responsible_officer_id).name %>
+		<% end %></p>
+		<% if @action_plan.implementation_reviewer_id != nil %>
+			<p><b>Action Plan Implementation reviewed by: </b>
+			<%= User.find(@action_plan.implementation_reviewer_id).name %></p>
+		<% end %>
+		<br/>
+		<h4>Details</h4>
+		<p> <strong>Description:</strong> </p>
+		<p><%= @action_plan.description %> </p>
+		<p><strong>Issue:</strong></p>
+		<p><% if @action_plan.issue_id == nil %>
+            	Issue Title
+          	<% else %>
+            	<%= link_to Issue.find(@action_plan.issue_id).title, dept_issue_path(Issue.find(@action_plan.issue_id)) %>
+          	<% end %>
+      	</p>
+      	<p><strong>Final Review Date: </strong><%= @action_plan.final_review_date %></p>
+      	<p><strong>Final Implementation Review Date:</strong> <%= @action_plan.final_implementation_review_date %></p>
+	</div>
+		<%= render 'actionplancomments_show' %>
+		<div class="span9">
+		<!--Show Activities under this Action Plan-->
+		<%= render 'activities_show', action_plan: @action_plan  %>
+		<p><% if @action_plan.ap_status_id < 2 && current_user?(User.find(@action_plan.responsible_officer_id)) %>
+			<%= link_to 'Add Activity', new_dept_action_plan_activity_path(@action_plan) , class: "btn btn-primary" %>
+			<!--Can't add any more Activities when AP is Verified onwards-->
+			<% end %>
+			<% if current_user?(User.find(@action_plan.responsible_officer_id)) %>
+				<%= link_to 'Edit Action Plan', edit_dept_action_plan_path(@action_plan) , class: "btn btn-primary" %>
+			<% end %>
+			<%= link_to 'Back to Issue', dept_issue_path(Issue.find(@action_plan.issue_id)) , class: "btn btn-primary"%>
+			<%= link_to 'Back to Action Plans', dept_action_plans_path , class: "btn btn-primary"%>   
+		</p>
+		<p>Note: It is suggested to delete any Rejected Activities and propose new ones in exchange of them. </p>
+		</div>
+</div>

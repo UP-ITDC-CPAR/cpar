@@ -1,0 +1,54 @@
+<%= form_for [:qmr, @issue] do |f| %>
+<%= f.label :title %>
+<%= f.text_field :title %>
+<br/>
+
+<%= f.label :description %>
+<%= f.text_area :description %>
+<br/>
+
+<% if @issue.id == nil %>  
+  <%= f.hidden_field :user_id, value: current_user.id %>
+  <label for="name">Originator Name: </label> 
+  <input type="text" id="name" value= "<%= current_user.name %>" disabled>
+
+  <label for="email">Originator Email: </label>
+  <input type="text" id="email" value= "<%= current_user.email %>" disabled>
+  
+<% else %>
+  <label for="name">Originator Name: </label> 
+  <input type="text" id="name" value= "<%= User.where(id: @issue.user_id).first.name %>" disabled>
+
+  <label for="email">Originator Email: </label>
+  <input type="text" id="email" value= "<%= User.where(id: @issue.user_id).first.email %>" disabled>
+<% end %>
+  
+<br/>
+
+<% if @issue.id == nil %>  
+  <%= f.label :department_id %> 
+  <%= f.select :department_id, Department.all.collect { |d| [d.name, d.id] } %>
+  <br/>
+<% else %> 
+  <label for="department">Issue under Department:</label>
+  <input type="text" id="department" value= "<%= Department.where(id: @issue.department_id).first.name %>" disabled>
+<% end %>
+
+<%= f.label :type_id %>
+<%= f.select :type_id, IssueType.all.collect { |t| [t.name, t.id] } %>
+<br/>
+
+<%= f.label :impact_id %>
+<%= f.select :impact_id, IssueImpact.all.collect { |i| [i.name, i.id] } %>
+<br/>
+
+<%= f.label :iso_nc_id, "ISO Reference ID" %>
+<%= f.select :iso_nc_id, IsoNc.all.collect { |i| [i.title, i.id] } %>
+<br/>
+
+<% if @issue.id == nil %>
+  <%= f.hidden_field :status_id, value: 1 %>
+<% end %>
+
+<%= f.submit "Save issue", class: "btn btn-primary" %>
+<% end %>

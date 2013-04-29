@@ -1,0 +1,64 @@
+<% provide(:title, 'Auditor: Action Plan Activities Status Update') %>
+<h1>Action Plan Activities Status Update</h1>
+<div class="row">
+  <div class="span6 offset3">
+<h2>Activities for Action Plan: <%= @action_plan.description %></h2>
+<% if @action_plan.ap_status_id == 1 %>
+	<%= form_for [:auditor, @action_plan], url: {action: "update_activities", method: "put"} do |f| %>
+		<table class="table table-striped">
+			<tr>
+				<th>Description</th>
+				<th></th>
+				<th>Status</th>
+				<th>Approve</th>
+				<th>Reject</th>
+			</tr>
+		<% @action_plan.activities.each do |act| %>
+			<% if act.status_id == 1%>
+				<tr>	
+					<td><%= f.label act.result %><td>
+					<td> <%= ActivityStatus.find(act.status_id).name %> </td>
+					<td><%= check_box_tag "action_plan[approve_list][]", act.id %></td>
+					<td><%= check_box_tag "action_plan[reject_list][]", act.id %></td>
+
+					<!--<td><%= radio_button_tag(:approved, 'approved', :checked => (:approved == 'approved')) %></td>
+	    			<td><%= radio_button_tag(:approved, 'rejected', :checked => (:approved == 'rejected')) %></td>-->
+				</tr>
+			<% end %>
+		<% end %>
+		</table>
+		<%= f.submit "Mark the following as Approved and Rejected", confirm: "Are you sure you want to mark the following Activities under this Action Plan as Approved and Rejected?", class: "btn btn-primary" %>
+		<p>Note: Make sure to Mark all Activities either as Approved or Rejected only. If an Activity is marked as both Approved and Rejected, no Action will be performed.</p>
+	<% end %>
+
+<!--For when Action Plan status is Implemented or Pending-->	
+<% elsif @action_plan.ap_status_id == 3 || @action_plan.ap_status_id == 4 %>
+	<%= form_for [:auditor, @action_plan], url: {action: "update_activities2", method: "put"} do |f| %>
+		<table class="table table-striped">
+			<tr>
+				<th>Description</th>
+				<th></th>
+				<th>Status</th>
+				<th>Approve Implementation</th>
+				<th>Reimplement</th>
+			</tr>
+		<% @action_plan.activities.each do |act| %>
+			<% if act.status_id == 3 %>
+				<tr>	
+					<td><%= f.label act.result %><td>
+					<td> <%= ActivityStatus.find(act.status_id).name %> </td>
+					<td><%= check_box_tag "action_plan[approve_list][]", act.id %></td>
+					<td><%= check_box_tag "action_plan[reimplement_list][]", act.id %></td>
+				</tr>
+			<% end %>
+		<% end %>
+		</table>
+		<%= f.submit "Mark Activity Implementations as Approved or Reimplement", confirm: "Are you sure you want to mark the following Activities under this Action Plan's Implementation as Approved or Reimplement?", class: "btn btn-primary" %>
+		<p>Note: Make sure to Mark all Activities either as Approved or Reimplement only. If an Activity is marked as both Approved and Reimplement, no Action will be performed.</p>
+	<% end %>
+	
+<% end %>
+
+<%= link_to "Back to Action Plan", auditor_action_plan_path(@action_plan), class: "btn btn-primary" %>
+
+</div></div>

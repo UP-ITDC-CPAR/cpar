@@ -1,0 +1,7 @@
+<% provide(:title, 'Officer: Edit Cause') %>
+<h1>Edit Cause</h1>
+
+<%= form_for [:officer, @issue, @cause] do |f| %>
+	<%= render 'fields', f: f %>
+	<%= f.submit "Save Edits to Cause", class: "btn btn-large btn-primary" %>
+<% end %>

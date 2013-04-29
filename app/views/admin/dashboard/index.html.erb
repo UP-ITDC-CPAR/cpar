@@ -1,0 +1,24 @@
+<% provide(:title, 'Administration') %>
+<h1>Administration</h1> 
+
+<div class="row">
+	<div class="span6">
+<h4>Users Summary</h4>
+<hr>
+
+<ul class="nav nav-pills nav-stacked">
+<li><%= link_to "All Users: ( "+ @users.count.to_s+" )", admin_users_path %></li>
+<li><%= link_to "Users needing Approval: ( "+ @users_enable.count.to_s+" )", admin_users_path(sort: '1') %></li>
+</ul>
+<br>
+<h4>Officer Users</h4>
+<hr>
+<ul class="nav nav-pills nav-stacked">
+<li><%= link_to "Department Heads: ( "+ @users_dept.count.to_s+" )", admin_users_path(sort: '2') %></li>
+<li><%= link_to "Responsible Officer: ( "+ @users_officer.count.to_s+" )", admin_users_path(sort: '3') %></li>
+<li><%= link_to "Incident Managers: ( "+ @users_qmr.count.to_s+" )", admin_users_path(sort: '4') %></li>
+<li><%= link_to "Auditors: ( "+ @users_auditor.count.to_s+" )", admin_users_path(sort: '5') %></li>
+</ul>
+<%= link_to "Add New User", new_admin_user_path, class: "btn btn-primary" %>
+
+</div></div>

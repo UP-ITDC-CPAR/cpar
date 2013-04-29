@@ -1,0 +1,41 @@
+<div class="row">
+<div class="span6">
+	<div class="row">
+		<div class="span3">
+		<%= form_for [:dept, @actionplan_comment] do |f| %>
+			<%= f.hidden_field :action_plan_id, value: @action_plan.id %>
+			<%= f.hidden_field :user_id, value: current_user.id %>
+			<%= f.text_area :content, size: "30x5" %>
+			<%= f.submit "Add Comment", class: "btn btn-small btn-primary" %>
+		<% end %>
+		<h4>Action Plan Updates:</h4>
+		<hr>
+		<% if @ap_updates.any? %>
+			<% @ap_updates.each do |au| %>
+				<%= au.created_at.strftime("%b %d, %Y | %H:%M") %>
+				<p>	<%= au.content %>
+				</p>
+			<% end %>
+		<% end %>
+		<%= will_paginate @ap_updates %>
+		</div>
+		<div class="span3">
+		<h4>Comments:</h4>
+		<hr>
+		<% if @ap_comments.any? %>
+			<% @ap_comments.each do |ac| %>
+				<%= ac.created_at.strftime("%b %d, %Y | %H:%M") %>
+				<% ac_user=User.find(ac.user_id) %>
+				<p><b><%= ac_user.name + ":" %></b>
+				  <% if ac_user.type_id != 6 %>
+				  	<%= "("+UserType.find(ac_user.type_id).name + ")" %>
+				  <% end %>
+				</p>
+				<p>	<%= ac.content %></p>
+			<% end %>
+		<% end %>
+		<%= will_paginate @ap_comments %>
+		</div>
+	</div>
+</div>
+</div>

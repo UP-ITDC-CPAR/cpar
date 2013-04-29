@@ -1,0 +1,43 @@
+<!--Functions as Activity index show for Current Action Plan -->
+<h3>Showing Activities</h3>
+<p>Activities found for this Action Plan: <%= @action_plan.activities.count %></p>
+<table class="table table-striped table-bordered">
+    <tr>
+      <th>Submitter</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Target Date</th>
+      <th>Actual Date</th>
+      <th></th>
+    </tr>
+
+    <% @activities.each do |activity| %>
+    	<tr>
+        <td> <%= User.find(activity.user_id).name %> </td>
+        <td> <%= activity.result %> </td>
+        <td> <%= ActivityStatus.find(activity.status_id).name %> 
+          <% if @action_plan.ap_status_id > 1 && activity.status_id == 2 && current_user?(User.find(activity.user_id)) %>
+            <%= link_to "(Mark as Done)", mark_done_officer_action_plan_activity_path(@action_plan, activity), confirm: "Are you sure you want to mark Activity as Done?" %>
+          <% elsif @action_plan.ap_status_id == 4 && activity.status_id == 5 && current_user?(User.find(activity.user_id)) %>
+            <%= link_to "(Mark as Done)", mark_done_officer_action_plan_activity_path(@action_plan, activity), confirm: "Are you sure you want to mark Activity as Done?" %>
+          <% end %>
+          <!--Mark as Reimplemented/Done again-->
+        </td>
+        <td> <%= activity.target_date %> </td>
+        <td><%= activity.actual_date %> </td>
+        <td>
+          <%= link_to "View", officer_action_plan_activity_path(ActionPlan.find(activity.action_plan_id), activity), class: "btn btn-small btn-primary" %>
+          <% if current_user?(User.find(activity.user_id)) %>
+            <%= link_to "Edit Activity", [:edit, :officer, ActionPlan.find(activity.action_plan_id), activity], class: "btn btn-small btn-primary" %>
+            <% if activity.status_id == 6 #rejected, show delete button %> 
+              <%= link_to "Delete Activity", [:officer, ActionPlan.find(activity.action_plan_id), activity] , method: :delete,
+                                    data: { confirm: "Are you sure you want to delete this activity?" }, class: "btn btn-small btn-primary" %>
+            <% end %>
+          <% end %>
+        </td>
+    	</tr>
+    <% end %>
+
+</table>
+
+<%= will_paginate @activities %>

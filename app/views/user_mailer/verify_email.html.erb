@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Web CPAR - Verify your Email, <%= @user.name %></h1>
+    <p>
+      Thank you for registering to Web CPAR, <b><%= @user.name %></b>. Before you can use your account, you first need to verify your email address. Please follow the link below to verify your email.
+    </p>
+    <p><%= link_to "Click to verify your email", edit_email_verification_url(@user.verification_token) %></p>
+    <p>If this email was sent in error and you did not register with the email <b><i><%= @user.email %></i></b> to the Web CPAR website, please ignore this email.</p>
+  </body>
+</html> 

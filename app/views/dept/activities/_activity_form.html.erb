@@ -1,0 +1,18 @@
+<%= form_for [:dept, @action_plan, @activity] do |f2| %>
+    <p><strong> Action Plan for Issue: </strong><%= Issue.find(@action_plan.issue_id).title %></p>
+    <p><b>Description: </b><%= @action_plan.description %></p>
+
+    <%= f2.label :description %>
+    <!--Use :result field as description field for Action Plan while not yet finished-->
+    <%= f2.text_area :result %>
+    
+    <%= f2.label :target_date %>
+    <%= f2.date_field :target_date, start_year: 1990 %>
+    <small>(click on rightmost arrow for calendar selector)</small>
+
+    <%= f2.hidden_field :status_id, value: 1 %>
+
+    <p></p>
+    <p><b> To be submitted as User: </b> <%= current_user.name %></p>
+    <%= f2.submit "Add Activity", class: "btn btn-primary" %>
+<% end %>

@@ -1,0 +1,2 @@
+module IssueAttachmentsHelper
+end

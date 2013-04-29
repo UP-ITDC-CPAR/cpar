@@ -1,0 +1,17 @@
+development:
+  address:              "smtp.gmail.com"
+  port:                 587
+  domain:               "webcpar12.herokuapp.com"
+  user_name:            "webcpartest@gmail.com"
+  password:             "09152151552"
+  authentication:       "plain"
+  enable_starttls_auto: true
+
+production:
+  address:              "smtp.gmail.com"
+  port:                 587
+  domain:               "webcpar12.herokuapp.com"
+  user_name:            "webcpartest@gmail.com"
+  password:             "09152151552"
+  authentication:       "plain"
+  enable_starttls_auto: true 

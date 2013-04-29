@@ -1,0 +1,39 @@
+<% provide(:title, "Showing Cause") %>
+<h1>Showing Cause</h1>
+<div class="row">
+  	<div class="span6">
+  		<p><strong>For Issue:</strong></p>
+  		<p><%= link_to Issue.find(@cause.issue_id).title, Issue.find(@cause.issue_id) %></p>
+		<p> <strong>Description:</strong> </p>
+		<p><%= @cause.description %> </p>
+		<p><strong>Investigated by:</strong></p>
+		<p><%= User.find(@cause.user_id).name %></p>
+		<p> <strong>Date Issued:</strong></p>
+		<p><%= @cause.date_issued %></p>
+		<%= link_to "Back to Issue", Issue.find(@cause.issue_id), class: "btn btn-small btn-primary" %>	
+		<hr>
+		<div class="span5">
+		    <h4>Files</h4>
+		    <hr>
+		    <% if @cause.cause_attachments.any? %>
+		      <%= @cause.cause_attachments.count %> files attached to this Cause:
+		      <% @cause.cause_attachments.each do |cause_attachment| %>
+		        <p>
+		          <% if cause_attachment.myfile.file.extension == 'pdf' || cause_attachment.myfile.file.extension == 'doc' || cause_attachment.myfile.file.extension == 'docx' %>
+		            <i class="icon-file"></i>
+		          <% elsif cause_attachment.myfile.file.extension == 'jpg' || cause_attachment.myfile.file.extension == 'jpeg' || cause_attachment.myfile.file.extension == 'png' || cause_attachment.myfile.file.extension == 'bmp'|| cause_attachment.myfile.file.extension == 'gif' %>
+		            <i class="icon-picture"></i>
+		          <% else %>
+		            <i class="icon-search"></i>
+		          <% end %>
+		          <b><i><%= link_to File.basename(cause_attachment.myfile.url), cause_attachment.myfile.url %></i></b> | 
+		          <%= cause_attachment.description %> |
+		          <%= link_to "View file", cause_attachment.myfile.url, target: '_blank' %>
+		        </p>
+		        <br>
+		      <% end %>
+		    <% end %>
+		</div>
+	</div>
+	<%= render 'causecomments_show' %>
+</div>

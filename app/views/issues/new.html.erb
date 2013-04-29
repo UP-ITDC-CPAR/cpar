@@ -1,0 +1,9 @@
+<% provide(:title, 'New Issue') %>
+<h1>New Issue</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+      <%= render 'issueform' %>
+      <%= link_to 'Back', issues_path, class: "btn btn-primary" %>
+  </div>
+</div>

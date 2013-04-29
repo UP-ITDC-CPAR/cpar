@@ -1,0 +1,27 @@
+<%= f.label :name %>
+<%= f.text_field :name %>
+
+<%= f.label :email %>
+<%= f.text_field :email %>
+
+<% if @user.id == nil %> 
+	<%= f.label :password %>
+	<%= f.password_field :password %>
+
+	<%= f.label :password_confirmation, "Confirmation" %>
+	<%= f.password_field :password_confirmation %>
+<% end %>
+
+<%= f.label :mobile %>
+<%= f.text_field :mobile %>
+
+<%= f.label :phone %>
+<%= f.text_field :phone %>
+
+<%= f.label 'Department' %>
+<%= f.select :department_id, Department.all.collect { |d| [d.name, d.id] } %>
+      <!--Temporary, use f.collection_select next time, putting the choices and their maps to integers (department_id, type_id) in an hash-->
+
+<%= f.label 'User Type' %>
+<%= f.select :type_id, UserType.all.collect { |t| [t.name, t.id] } %>
+      <!--Temporary, I think user type (CPAR Originator, QMR, etc) should be admin-assigned and not assigned here-->

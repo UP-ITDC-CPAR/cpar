@@ -1,0 +1,19 @@
+<% if issue.status_id < 6 %>
+	<!--
+	<%= link_to "Change Status to #{status_display(issue.status_id)}", statuschange_qmr_issue_path(issue, stat_id: status_change(issue.status_id)), confirm: 'Are you sure you want to change this Issue\'s status?', class: "btn btn-primary" %>-->
+	<!--<%= form_for [:qmr, issue] do |f| %>
+  		<%= f.hidden_field :status_id, value: status_change(issue.status_id) %>
+  		<%= f.submit "Change Status to #{status_display(issue.status_id)}", confirm: 'Are you sure you want to change this Issue\'s status?', class: "btn btn-primary" %>
+	<% end %>-->
+
+	<% if issue.status_id == 1 %>
+		<%= link_to "Approve Issue as Valid CPAR", statuschange_qmr_issue_path(issue, stat_id: 2), confirm: 'Are you sure you want to Verify this Issue for CPAR?', class: "btn btn-primary" %>
+		<%= link_to "Reject Issue", statuschange_qmr_issue_path(issue, stat_id: 7), confirm: 'Are you sure you want to Reject this Issue?', :data => {:toggle => "modal"}, class: "btn btn-primary" %>
+	<% end %>
+	<!--Rejectable only while still New-->
+<!--If ever, add elsif issue.status_id ==6, or if Issue is Closed-->
+<% elsif issue.status_id == 7 %>
+	<!-- Status=7 is Rejected, either Close Rejected Issues or set them back to New or Verified Status-->
+	<!--<%= link_to "Close Rejected Issue", statuschange_qmr_issue_path(issue, stat_id: 8), confirm: 'Are you sure you want to Close this Issue? If Issue is improperly Rejected, set it back to New instead.', class: "btn btn-primary" %>-->
+	<%= link_to "Return to New Status", statuschange_qmr_issue_path(issue, stat_id: 1), confirm: 'Are you sure you want to return this Rejected Issue\'s Status to New? When back to New Status, you can again either Approve or Reject Issue.' , class: "btn btn-primary" %>
+<% end %>

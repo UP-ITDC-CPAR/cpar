@@ -1,0 +1,8 @@
+<p>
+<%= form_for [:auditor, @closeoutform] do |f| %>
+	<%= f.hidden_field :auditor_id, value: current_user.id %>
+	<%= f.hidden_field :issue_id, value: @issue.id %>
+	<%= f.submit "Start Closeup Form for this Issue", confirm: 'Are you sure you want to start the closeup form? Review the Action Plan implementation again.', class: "btn btn-primary" %>
+<% end %>
+</p>
+<%= @action_plans_implemented.count %> Action Plans implemented for this issue, start closeout form if you find it sufficient.

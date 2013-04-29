@@ -1,0 +1,66 @@
+<% provide(:title, 'Administration: All users') %>
+ <h1>All users</h1>
+
+ <ul class="nav nav-pills">
+  <li class="<%= 'active' if params[:sort] == nil %>"><%= link_to "All Users",admin_users_path %></li>
+  <li class="<%= 'active' if params[:sort] == '1' %>"><%= link_to "Users for Activation", admin_users_path(sort: '1') %></li>
+  <li class="<%= 'active' if params[:sort] == '2' %>"><%= link_to "Department Heads",admin_users_path(sort: '2') %></li>
+  <li class="<%= 'active' if params[:sort] == '3' %>"><%= link_to "Responsible Officers",admin_users_path(sort: '3') %></li>
+  <li class="<%= 'active' if params[:sort] == '4' %>"><%= link_to "Incident Managers",admin_users_path(sort: '4') %></li>
+  <li class="<%= 'active' if params[:sort] == '5' %>"><%= link_to "Auditors",admin_users_path(sort: '5') %></li>
+</ul>
+
+<% case params[:sort] %>
+<% when '1' %>
+  <h2>New Users for Approval</h2>
+<% when '2' %>
+  <h2>Department Head Users</h2>
+<% when '3' %>
+  <h2>Responsible Officer Users</h2>
+<% when '4' %>
+  <h2>Incident Managers</h2>
+<% when '5' %>
+  <h2>Auditors</h2>
+<% else %>
+  <h2>Admin: Showing All Users</h2>
+<% end %>
+
+  <table class="table table-striped table-bordered">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Department</th>
+      <th>User Type</th>
+      <th></th>
+
+    </tr>
+
+    <% @users.each do |user| %>
+    	<tr>
+        <td> <%= link_to user.name, admin_user_path(user) %> </td>
+        <td> <%= user.email %> </td>
+        <td> <%= Department.where(id: user.department_id).first.name %> </td>
+        <td> <%= UserType.where(id: user.type_id).first.name %> </td>
+        <td>
+          <div id="command_container">
+            <ul>
+              <li id="user_<%= user.id %>">
+                <% if params[:sort] == '1' %>
+                  <%= link_to "Activate Account", activate_admin_user_path(user), :confirm => 'Are you sure you want to Activate this User\'s account?', class: "btn btn-small btn-primary" %>
+                <% end %>
+                <%= link_to 'Edit', edit_admin_user_path(user), class: "btn btn-primary" %>
+                   <% if !current_user?(user) %>
+  	                <%= link_to 'Delete', [:admin, user], :confirm => 'Are you sure you want to delete this User\'s account?', :method => :delete , class: "btn btn-primary" %>
+   	               <% end %>
+              </li>
+            </ul>
+          </div>
+        </td>
+    	</tr>
+    <% end %>
+
+  </table>
+
+<%= link_to "Add New User", new_admin_user_path, class: "btn btn-primary" %>
+<!--to replace this with table view like in Issues Index-->
+<%= will_paginate @users %>

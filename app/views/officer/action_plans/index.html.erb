@@ -1,0 +1,69 @@
+<% provide(:title, 'Officer: All Action Plans') %>
+<h1>Officer: Viewing Action Plans</h1>
+<h2><%= "Department: #{Department.where(id: current_user.department_id).first.name}" %></h2>
+
+<ul class="nav nav-pills">
+  <li class="<%= 'active' if params[:sort] == 'yours' %>"><%= link_to "Your Submitted Action Plans", officer_action_plans_path(sort: 'yours') %></li>
+  <li class="<%= 'active' if params[:sort] == nil %>"><%= link_to "All Action Plans", officer_action_plans_path %></li>
+  <li class="<%= 'active' if params[:sort] == '1' %>"><%= link_to "New Action Plans", officer_action_plans_path(sort: '1') %></li>
+  <li class="<%= 'active' if params[:sort] == '2' %>"><%= link_to "Verified", officer_action_plans_path(sort: '2') %></li>
+  <li class="<%= 'active' if params[:sort] == '3' %>"><%= link_to "Implemented", officer_action_plans_path(sort: '3') %></li>
+  <li class="<%= 'active' if params[:sort] == '4' %>"><%= link_to "Pending", officer_action_plans_path(sort: '4') %></li>
+  <li class="<%= 'active' if params[:sort] == '5' %>"><%= link_to "Closed Action Plans", officer_action_plans_path(sort: '5') %></li>
+</ul>
+
+<% case params[:sort] %>
+<% when 'sort' %>
+  <h2>Your Submitted Action Plans</h2>
+<% when '1' %>
+  <h2>New Action Plans for Approval</h2>
+<% when '2' %>
+  <h2>Verified Action Plans</h2>
+<% when '3' %>
+  <h2>Action Plans for Implementation Review</h2>
+<% when '4' %>
+  <h2>Pending Action Plans (Reimplementation needed)</h2>
+<% when '5' %>
+  <h2>Closed Action Plans</h2>
+<% else %>
+  <h2>Officer: Showing All Action Plans</h2>
+<% end %>
+
+
+<table class="table table-striped table-bordered">
+    <tr>
+      <th>Issue</th>
+      <th>Description</th>
+      <th>Submitted by</th>
+      <th>Status</th>
+      <th>Final Review Date</th>
+      <th>Final Implementation Date</th>
+      <th></th>
+
+    </tr>
+
+    <% @action_plans.each do |ap| %>
+    	<tr>
+	    	<td><% if ap.issue_id == nil %>
+            Issue Title
+          <% else %>
+            <%= Issue.find(ap.issue_id).title %>
+          <% end %>
+        </td>
+	    	<td><%= ap.description %></td>
+	    	<td><% if ap.responsible_officer_id == nil %>
+            User name
+          <% else %>
+            <%= User.find(ap.responsible_officer_id).name %>
+          <% end %>
+        </td>
+        <td><%= ActionPlanStatus.find(ap.ap_status_id).name %></td>
+	    	<td><%= ap.final_review_date %></td>
+	    	<td><%= ap.final_implementation_review_date %></td>
+	    	<td> 
+	    		<%= link_to "View", [:officer, ap], class: "btn btn-primary" %>
+	    	</td>
+	    </tr>
+    <% end %>
+</table>
+<%= will_paginate @action_plans %>

@@ -1,0 +1,39 @@
+<% provide(:title, 'Auditor Dashboard') %>
+<h1>Auditor Dashboard</h1> 
+
+<<div class="row">
+	<div class="span6">
+<h4>Issues Summary</h4>
+<hr>
+<ul class="nav nav-pills nav-stacked">
+<li><%= link_to "All Issues: ( "+ @issues.count.to_s+" )", auditor_issues_path %></li>
+<li><%= link_to "New Issues: ( "+ @issues_new.count.to_s+" )", auditor_issues_path(sort: '1') %></li>
+<li><%= link_to "Verified Issues: ( "+ @issues_verified.count.to_s+" )", auditor_issues_path(sort: '2') %></li>
+<li><%= link_to "Investigating Issues: ( "+@issues_investigating.count.to_s+" )", auditor_issues_path(sort: '3') %></li>
+<li><%= link_to "Correcting Issues: ( "+@issues_correcting.count.to_s+" )", auditor_issues_path(sort: '4') %></li>
+<li><%= link_to "Issues for Closeout: ( "+@issues_closeout.count.to_s+" )", auditor_issues_path(sort: '5') %></li>
+<li><%= link_to "Closed Issues: ( "+@issues_closed.count.to_s+" )", auditor_issues_path(sort: '6') %></li>
+<li><%= link_to "Rejected Issues: ( "+@issues_rejected.count.to_s+" )", auditor_issues_path(sort: '7') %></li>
+</ul>
+</div>
+
+<div class="span6">
+<h4>Action Plans Summary</h4>
+<hr>
+
+<ul class="nav nav-pills nav-stacked">
+<li><%= link_to "All Action Plans: ( "+ @action_plans.count.to_s+" )", auditor_action_plans_path %></li>
+<li><%= link_to "New Action Plans: ( "+ @action_plans_new.count.to_s+" )", auditor_action_plans_path(sort: '1') %></li>
+<li><%= link_to "Verified Action Plans: ( "+ @action_plans_verified.count.to_s+" )", auditor_action_plans_path(sort: '2') %></li>
+<li><%= link_to "Implemented Action Plans: ( "+ @action_plans_implemented.count.to_s+" )", auditor_action_plans_path(sort: '3') %></li>
+<li><%= link_to "Pending Action Plans: ( "+ @action_plans_pending.count.to_s+" )", auditor_action_plans_path(sort: '4') %></li>
+<li><%= link_to "Closed Action Plans: ( "+ @action_plans_closed.count.to_s+" )", auditor_action_plans_path(sort: '5') %></li>
+</ul>
+
+<br>
+<h4>Closeout Forms Summary</h4>
+<hr>
+<p><b>Closeout Forms Started: </b>( <%= @closeoutforms_started.count %> )</p>
+<p><b>Closeout Forms Finished: </b>( <%= @closeoutforms_finished.count %> )</p>
+
+</div></div>

@@ -1,0 +1,73 @@
+<% provide(:title, 'Department: Issues Index') %>
+<h1><%= "Department Head: #{current_user.name}" %></h1>
+<h2><%= "Department: #{Department.where(id: current_user.department_id).first.name}" %></h2>
+
+<ul class="nav nav-pills">
+  <li class="<%= 'active' if params[:sort] == nil %>"><%= link_to "All Issues",dept_issues_path %></li>
+  <li class="<%= 'active' if params[:sort] == '1' %>"><%= link_to "New Issues", dept_issues_path(sort: '1') %></li>
+  <li class="<%= 'active' if params[:sort] == '2' %>"><%= link_to "Verified Issues", dept_issues_path(sort: '2') %></li>
+  <li class="<%= 'active' if params[:sort] == '3' %>"><%= link_to "Investigating Issues", dept_issues_path(sort: '3') %></li>
+  <li class="<%= 'active' if params[:sort] == '4' %>"><%= link_to "Correcting Issues", dept_issues_path(sort: '4') %></li>
+  <li class="<%= 'active' if params[:sort] == '5' %>"><%= link_to "Issues for Closeout", dept_issues_path(sort: '5') %></li>
+  <li class="<%= 'active' if params[:sort] == '6' %>"><%= link_to "Closed Issues", dept_issues_path(sort: '6') %></li>
+  <li class="<%= 'active' if params[:sort] == '7' %>"><%= link_to "Rejected Issues", dept_issues_path(sort: '7') %></li>
+</ul>
+
+<% case params[:sort] %>
+<% when '1' %>
+  <h2>New Issues for Approval</h2>
+<% when '2' %>
+  <h2>Verified Issues for Officer Assignment</h2>
+<% when '3' %>
+  <h2>Investigating Issues</h2>
+<% when '4' %>
+  <h2>Correcting Issues</h2>
+<% when '5' %>
+  <h2>Issues for Closeout</h2>
+<% when '6' %>
+  <h2>Closed Issues</h2>
+<% when '7' %>
+  <h2>Rejected Issues</h2>  
+<% else %>
+  <h2>Department: Showing All Issues</h2>
+<% end %>
+
+<table class="table table-striped table-bordered">
+    <tr>
+      <th>Title</th>
+      <th>Originator</th>
+      <th>Impact</th>
+      <th>Status</th> <!--replaced Department in favor of Status-->
+      <th>Type</th>
+      <th>ISO Id</th>
+      <th>Assigned To</th>
+      <th></th>
+    </tr>
+
+    <% @issues.each do |issue| %>
+      <tr>
+        <td> <%= link_to issue.title, dept_issue_path(issue) %> </td>
+        <td> <%= issue.user.name %> </td>
+        <td> <% if issue.impact_id == 1 %>
+              <span class="label label-important"><%= issue.issue_impact.name %></spn>
+              <% elsif issue.impact_id == 2 %>
+                <span class="label label-warning"><%= issue.issue_impact.name %></spn>
+              <% else %>
+                <span class="label label-info"><%= issue.issue_impact.name %></spn>
+            <% end %>
+        </td>
+        <td> <%= issue.issue_status.name %> </td>
+        <td> <%= issue.issue_type.name %></td>
+        <td> <%= issue.iso_nc.title %></td>
+        <td> <% if issue.responsible_officer_id == nil %>
+                None
+             <% else %>
+                <%= User.find(issue.responsible_officer_id).name %>
+             <% end %>
+        </td>
+        <td><%= link_to 'Details', details_dept_issue_path(issue), class: "btn btn-primary" %></td>
+      </tr>
+    <% end %>
+
+  </table>
+  <%= will_paginate @issues %>

@@ -1,0 +1,31 @@
+<%= f.label :name %>
+<%= f.text_field :name %>
+
+<%= f.label :email %>
+<%= f.text_field :email %>
+
+<% if @user.id == nil %> 
+	<%= f.label :password %>
+	<%= f.password_field :password %>
+
+	<%= f.label :password_confirmation, "Confirmation" %>
+	<%= f.password_field :password_confirmation %>
+<% end %>
+
+<%= f.label :mobile %>
+<%= f.text_field :mobile %>
+
+<%= f.label :phone %>
+<%= f.text_field :phone %>
+
+<%= f.label 'Department' %>
+      
+<% if @user.id == nil %>
+	<%= f.select :department_id, Department.all.collect { |d| [d.name, d.id] } %>
+	<%= f.hidden_field :type_id, value: 6 %>
+<% else %>
+	<input type="text" id="department_id" value= "<%= Department.where(id: @user.department_id).first.name %>" disabled>
+
+	<%= f.label 'User Type' %>
+	<input type="text" id="type_id" value= "<%= UserType.where(id: @user.type_id).first.name %>" disabled>
+<% end %>

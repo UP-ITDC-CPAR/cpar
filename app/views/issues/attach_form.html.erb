@@ -1,0 +1,19 @@
+<% provide(:title, 'Attach file to Issue') %>
+<h1>Attach File to Issue</h1>
+<div class="row">
+  <div class="span6 offset3"> 
+  <%= form_for(@issue_attachment) do |f| %>
+  	    <%= f.label "Choose File" %>
+  	    <%= f.file_field :myfile %>
+
+  	    <%= f.label :description %>
+  	    <%= f.text_field :description %>
+
+  	    <%= f.hidden_field :user_id, value: current_user.id %>
+  	    <%= f.hidden_field :issue_id, value: @issue.id %>
+
+  	    <%= f.submit "Attach File", issue_id: @issue.id, class: "btn btn-primary" %>
+      <% end %>
+      <%= link_to 'Back', @issue, class: "btn btn-primary" %>
+  </div>
+</div>

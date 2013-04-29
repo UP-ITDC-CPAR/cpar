@@ -1,0 +1,18 @@
+<% provide(:title, "Showing Activity") %>
+<h1>Showing Activity</h1>
+<div class="row">
+  <div class="span6">
+  		<p><strong>Status:</strong></p>
+  		<p><%= ActivityStatus.find(@activity.status_id).name %></p>
+		<p> <strong>Description:</strong> </p>
+		<p><%= @activity.result %> </p>
+		<p><strong>Author:</strong></p>
+		<p><%= User.find(@activity.user_id).name %></p>
+		<p> <strong>Target Date:</strong></p>
+		<p><%= @activity.target_date %></p>
+		<p> <strong>Actual Date:</strong></p>
+		<p><%= @activity.actual_date %></p>
+		
+		<%= link_to "Back to Action Plan", ActionPlan.find(@activity.action_plan_id), class: "btn btn-small btn-primary" %>
+	</div>
+</div>

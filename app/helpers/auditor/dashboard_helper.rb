@@ -1,0 +1,2 @@
+module Auditor::DashboardHelper
+end

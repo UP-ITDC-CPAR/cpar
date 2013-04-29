@@ -1,0 +1,11 @@
+    <p><strong>For Issue: </strong><%= @issue.title %></p>
+    <p><strong>Issue Description: </strong><%= @issue.description %></p>
+
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+    
+    <%= f.label :date_issued %>
+    <input type="date" id="date_issued" value= "<%= Date.today %>" disabled>
+    <%= f.hidden_field :date_issued, value: Date.today %>
+
+    

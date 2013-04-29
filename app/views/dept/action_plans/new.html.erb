@@ -1,0 +1,18 @@
+<% provide(:title, 'New Action Plan') %>
+<h1>New Action Plan</h1>
+
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for([:dept, @action_plan]) do |f| %> 
+      <%= f.hidden_field :issue_id, value: params[:issue_id] %>
+      <p><b>To be submitted for Issue:</b> <%= Issue.find_by_id(params[:issue_id]).title %></p>
+
+      <%= f.label :description %>
+      <%= f.text_area :description %>
+
+  	  <%= f.hidden_field :ap_status_id, value: 1 %>
+
+      <%= f.submit "Create Action Plan and Add Activities", class: "btn btn-large btn-primary" %>
+    <% end %>
+  </div>
+</div>

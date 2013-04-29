@@ -1,0 +1,29 @@
+<!--Functions as Activity index show for Current Action Plan -->
+<h3>Showing Activities</h3>
+<p>Activities found for this Action Plan: <%= @action_plan.activities.count %></p>
+<table class="table table-striped table-bordered">
+    <tr>
+      <th>Submitter</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Target Date</th>
+      <th>Actual Date</th>
+      <th></th>
+    </tr>
+
+    <% @activities.each do |activity| %>
+    	<tr>
+        <td> <%= User.find(activity.user_id).name %> </td>
+        <td> <%= activity.result %> </td>
+        <td> <%= ActivityStatus.find(activity.status_id).name %> </td>
+        <td> <%= activity.target_date %> </td>
+        <td> <%= activity.actual_date %> </td>
+        <td>
+          <%= link_to "View", action_plan_activity_path(ActionPlan.find(activity.action_plan_id), activity), class: "btn btn-small btn-primary" %>
+        </td>
+    	</tr>
+    <% end %>
+
+</table>
+
+<%= will_paginate @activities %>

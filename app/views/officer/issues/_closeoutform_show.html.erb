@@ -1,0 +1,67 @@
+<% if @cof %>
+  <hr>
+  <h3>Closeout Form for "<%= @issue.title %>" Issue </h3>
+  <table class="table table-striped table-bordered">
+      <tr>
+        <th>Officer</th>
+        <th>Auditor</th>
+        <th>QMR</th>
+        <th>Closeout Date</th>
+      </tr>
+
+
+      	<tr>
+          <td>Officer Acknowledgement</td>
+          <td> <%= @cof.auditor_id != nil ? User.find(@cof.auditor_id).name : "Pending" %> </td>
+          <td> 
+            <% if @cof.qmr_id == nil %>
+              Pending
+            <% else %>
+              <%= User.find(@cof.qmr_id).name %> 
+            <% end %>
+          </td>
+          <td>
+            <%= @cof.closeout_date %>
+          </td>
+      	</tr>
+
+  </table>
+
+  <table class="table table-striped table-bordered">
+      <tr>
+        <th>Department</th>
+        <th>Department Head</th>
+        <th>Responsible Officer</th>
+      </tr>
+
+      <% @cof.closeout_form_depts.each do |cofd| %>
+        <tr>
+          <td><%= Department.where(id: cofd.dept_id).first.name %></td>
+          <td><% if cofd.dept_head_id == nil %>
+                Pending
+              <% else %>
+                <%= User.find(cofd.dept_head_id).name %>
+              <% end %>
+          </td>
+          <td><% if cofd.officer_id == nil %>
+                <% if cofd.dept_id == current_user.department_id && current_user.type_id == 3 %>
+                  <% if found_officer_id(@issue) %>
+                    <%= link_to "Sign Closeout", sign_closeout_officer_issue_path(@issue, cofd: cofd.id), confirm: "Are you sure you want to sign close out form?" %>
+                  <% else %>
+                    Pending
+                  <% end %>
+                <% else %>
+                  Pending
+                <% end %>
+              <% else %>
+                <%= User.find(cofd.officer_id).name %>
+              <% end %></td>
+        </tr>
+      <% end %>
+  </table>
+  <% if @cof.closeout_date == nil %>
+    <p>"Pending" means officer still has yet to Approve Closeout of this Issue. If you are an officer assigned to this Issue, please click on "Sign Closeout" to Sign Close out form.</p>
+  <% else %>
+    <h4>This Issue has been properly Closed.</h4>
+  <% end %>
+<% end %>

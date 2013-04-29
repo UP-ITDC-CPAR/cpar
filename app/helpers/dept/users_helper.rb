@@ -1,0 +1,2 @@
+module Dept::UsersHelper
+end

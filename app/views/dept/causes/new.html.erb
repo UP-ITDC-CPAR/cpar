@@ -1,0 +1,14 @@
+<% provide(:title, 'Dept as Officer: New Cause') %>
+<h1>New Cause</h1>
+
+<% if main_officer(@issue) %>
+	<%= form_for [:dept, @issue, @cause] do |f| %>
+		<%= render 'fields', f: f %>
+		<%= f.submit "Add Cause", class: "btn btn-large btn-primary" %>
+	<% end %>
+<% elsif nrd_officer(@issue) %>
+	<%= form_for [:dept, @issue, @cause], url: {action: "create_nrd", method: "post", controller: "causes" } do |f| %>
+		<%= render 'fields', f: f %>
+		<%= f.submit "Add Cause", class: "btn btn-large btn-primary" %>
+	<% end %>
+<% end %>

@@ -1,0 +1,25 @@
+<% provide(:title, 'All users') %>
+<h1>All users</h1>
+
+<table class="table table-striped table-bordered">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Department</th>
+      <th>User Type</th>
+
+    </tr>
+
+    <% @users.each do |user| %>
+      
+    	<tr>
+        <td> <%= link_to user.name, user_path(user) %> </td>
+        <td> <%= user.email %> </td>
+        <td> <%= Department.where(id: user.department_id).first.name %> </td>
+        <td> <%= UserType.where(id: user.type_id).first.name %> </td>
+    	</tr>
+      
+    <% end %>
+
+  </table>
+<%= will_paginate %>

@@ -1,0 +1,2 @@
+module Qmr::NextResponsibleDepartmentsHelper
+end

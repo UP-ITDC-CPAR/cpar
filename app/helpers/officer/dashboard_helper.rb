@@ -1,0 +1,2 @@
+module Officer::DashboardHelper
+end

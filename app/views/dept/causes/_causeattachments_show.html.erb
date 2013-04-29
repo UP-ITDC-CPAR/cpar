@@ -1,0 +1,38 @@
+<div class="span5">
+    <h4>Files</h4>
+    <hr>
+    <% if @cause.cause_attachments.any? %>
+      <%= @cause.cause_attachments.count %> files attached to this Cause:
+      <% @cause.cause_attachments.each do |cause_attachment| %>
+        <p>
+          <% if cause_attachment.myfile.file.extension == 'pdf' || cause_attachment.myfile.file.extension == 'doc' || cause_attachment.myfile.file.extension == 'docx' %>
+            <i class="icon-file"></i>
+          <% elsif cause_attachment.myfile.file.extension == 'jpg' || cause_attachment.myfile.file.extension == 'jpeg' || cause_attachment.myfile.file.extension == 'png' || cause_attachment.myfile.file.extension == 'bmp'|| cause_attachment.myfile.file.extension == 'gif' %>
+            <i class="icon-picture"></i>
+          <% else %>
+            <i class="icon-search"></i>
+          <% end %>
+          <b><i><%= link_to File.basename(cause_attachment.myfile.url), cause_attachment.myfile.url %></i></b> | 
+          <%= cause_attachment.description %> |
+          <%= link_to "View file", cause_attachment.myfile.url, target: '_blank' %>
+          <% if current_user.id == cause_attachment.user_id %>
+            | <%= link_to "delete", dept_cause_attachment_path(cause_attachment, cause_id: @cause.id), confirm: "Are you sure you want to delete this File?", method: :delete  %>
+          <% end %>
+        </p>
+        <br>
+      <% end %>
+    <% else %>
+      <%= form_for(@cause_attachment) do |f| %>
+        <%= f.label "Choose File" %>
+        <%= f.file_field :myfile %>
+
+        <%= f.label :description %>
+        <%= f.text_field :description %>
+
+        <%= f.hidden_field :user_id, value: current_user.id %>
+        <%= f.hidden_field :cause_id, value: @cause.id %>
+
+        <%= f.submit "Attach File", cause_id: @cause.id, class: "btn btn-primary" %>
+      <% end %>
+    <% end %>
+  </div>

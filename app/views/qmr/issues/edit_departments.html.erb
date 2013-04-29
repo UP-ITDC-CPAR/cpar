@@ -1,0 +1,36 @@
+<% provide(:title, 'QMR: Edit Departments') %>
+<h1>QMR: Edit Departments</h1>
+<div class="row">
+  <div class="span6 offset3">
+	<% if @issue.status_id < 5 %>
+    	<!--This, or just make QMR editing of Issue restricted while Status = 3 onwards?-->
+    	<%= form_for [:qmr, @issue] do |f| %>
+   		  	<%= f.label "Main Department" %> 
+		  	<%= f.select :department_id, Department.all.collect { |d| [d.name, d.id] } %>
+		  	<%= f.submit "Update Main Department", class: "btn btn-primary" %>
+		<% end %>
+		<!--By default, if you change department to a Main department that's already added as Additional below, New Main department gets Popped out of Additional below and Previous Main department then Pushed as an Addional Dept below.
+			Otherwise, if you change Department to a Department that isn't added as additional yet, Just change as normal, no changes to Additional Depts below.-->
+	    <hr>
+	    <p><b>Add Additional Departments:</b></p>
+	    <small>Additional Departments already added:</small>
+	    <% if @issue.next_responsible_departments.any? %>
+	       <% @issue.next_responsible_departments.each do |nrd| %>
+	    	   <%= Department.where(id: nrd.department_id).first.name + " " %>
+	            <!-- "(" + nrd.responsibility_level.to_s + ") "-->
+	        <% end %>
+	    <% else %>
+	        None
+	    <% end %>
+		<%= form_for [:qmr, @next_responsible_department] do |f| %>
+	  	    <%= f.select :department_id, Department.where("id not in (?)", @nrds).collect { |d| [d.name, d.id] } %>
+
+	  	    <%= f.hidden_field :dept_status_id, value: @issue.status_id %>
+	  	    <%= f.hidden_field :issue_id, value: @issue.id %>
+	  	    <%= f.hidden_field :responsibility_level, value: 2 %>
+
+	  	    <%= f.submit "Add Department", class: "btn btn-primary" %>
+	    <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+  <div class="span5">
+    <h4>Files</h4>
+    <hr>
+    <% if @issue.issue_attachments.any? %>
+      <%= @issue.issue_attachments.count %> files attached to this Issue:
+      <% @issue.issue_attachments.each do |issue_attachment| %>
+        <p>
+          <!--<% if issue_attachment.myfile.file.extension == 'pdf' || issue_attachment.myfile.file.extension == 'doc' || issue_attachment.myfile.file.extension == 'docx'%>
+            <%= image_tag preview_or_default_image(issue_attachment) if issue_attachment.myfile? %>
+            <iframe src=<%= ["http://docs.google.com/gview?url=", Rails.root.join(issue_attachment.myfile_url), "&embedded=true"].join %> style="width:600px; height:500px;" frameborder="0"></iframe>
+          <% else %>
+            <%= image_tag preview_or_default_image(issue_attachment) if issue_attachment.myfile? %>
+          <% end %>-->
+          <% if issue_attachment.myfile.file.extension == 'pdf' || issue_attachment.myfile.file.extension == 'doc' || issue_attachment.myfile.file.extension == 'docx' %>
+            <i class="icon-file"></i>
+          <% elsif issue_attachment.myfile.file.extension == 'jpg' || issue_attachment.myfile.file.extension == 'jpeg' || issue_attachment.myfile.file.extension == 'png' || issue_attachment.myfile.file.extension == 'bmp'|| issue_attachment.myfile.file.extension == 'gif' %>
+            <i class="icon-picture"></i>
+          <% else %>
+            <i class="icon-search"></i>
+          <% end %>
+          <b><i><%= link_to File.basename(issue_attachment.myfile.url), issue_attachment.myfile.url %></i></b> | 
+          <%= issue_attachment.description %> |
+          <%= link_to "View file", issue_attachment.myfile.url, target: '_blank' %>
+          <% if current_user.id == issue_attachment.user_id %>
+            | <%= link_to "delete", issue_attachment_path(issue_attachment, issue_id: @issue.id), confirm: "Are you sure you want to delete this File?", method: :delete  %>
+          <% end %>
+        </p>
+        <br>
+      <% end %>
+    <% end %>
+  </div>

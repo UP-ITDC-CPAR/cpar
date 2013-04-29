@@ -1,0 +1,54 @@
+<header class="navbar navbar-fixed-top navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <!--<a class='brand' href = '#'><img src="upitdcsmalllogo.png"/></a>-->
+      <!--<% if signed_in? %>
+         <li> <%= link_to current_user.name, current_user %></li>
+      <% end %>-->
+      <%= link_to "Web CPAR", root_path, id: "logo" %>
+      <nav>
+        <ul class="nav pull-right">
+          <% if signed_in? %>
+            <li> <%= link_to "Signed in as: #{current_user.name}", current_user %></li>
+          <% end %>
+          <!--<li><%= link_to "Home", root_path %></li>-->
+          <% if signed_in? %>
+            <% if current_user.admin? %>
+              <li><%= link_to "Control Panel", admin_path %></li>
+            <% elsif current_user.type_id==4 %>
+              <li><%= link_to "QMR", qmr_path %></li>
+            <% elsif current_user.type_id==5 %>
+              <li><%= link_to "Auditor", auditor_path %></li>
+            <% elsif current_user.type_id==3 %>
+              <li><%= link_to "Officer", officer_path %></li>
+            <% elsif current_user.type_id==2 %>
+              <li><%= link_to "Dept", dept_path %></li>
+            <% else %>
+               <li class="divider"></li>
+            <% end %>
+            <li><%= link_to "Report New Issue", new_issue_path %></li>
+            <li><%= link_to "Issues", issues_path %></li>
+            <!--<li><%= link_to "Action Plans", action_plans_path %></li>-->
+            <!--temporary, remove this later-->
+            <li><%= link_to "Users", users_path %></li>
+            <li id="fat-menu" class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Account <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "Profile", current_user %></li>
+                <li><%= link_to "User Settings", edit_user_path(current_user) %></li>
+                <li class="divider"></li>
+                <li>
+                  <%= link_to "Sign out", signout_path, method: "delete" %>
+                </li>
+              </ul>
+            </li>
+          <% else %>
+            <li><%= link_to "Sign in", signin_path %></li>
+          <% end %>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>

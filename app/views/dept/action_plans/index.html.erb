@@ -1,0 +1,73 @@
+<% provide(:title, 'Officer: All Action Plans') %>
+<h1>Dept as Officer: All Action Plans</h1>
+<h2><%= "Department: #{Department.where(id: current_user.department_id).first.name}" %></h2>
+
+<table class="table table-striped table-bordered">
+    <tr>
+      <th>Issue</th>
+      <th>Description</th>
+      <th>Submitted by</th>
+      <th>Status</th>
+      <th>Final Review Date</th>
+      <th>Final Implementation Date</th>
+      <th></th>
+
+    </tr>
+
+    <% @action_plans.each do |ap| %>
+    	<tr>
+	    	<td><% if ap.issue_id == nil %>
+            Issue Title
+          <% else %>
+            <%= Issue.find(ap.issue_id).title %>
+          <% end %>
+        </td>
+	    	<td><%= ap.description %></td>
+	    	<td><% if ap.responsible_officer_id == nil %>
+            User name
+          <% else %>
+            <%= User.find(ap.responsible_officer_id).name %>
+          <% end %>
+        </td>
+        <td><%= ActionPlanStatus.find(ap.ap_status_id).name %></td>
+	    	<td><%= ap.final_review_date %></td>
+	    	<td><%= ap.final_implementation_review_date %></td>
+	    	<td> 
+	    		<%= link_to "View", [:dept, ap], class: "btn btn-primary" %>
+	    	</td>
+	    </tr>
+    <% end %>
+</table>
+<%= will_paginate @action_plans %>
+
+<h2>Your Submitted Action plans</h2>
+<table class="table table-striped table-bordered">
+    <tr>
+      <th>Issue</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Final Review Date</th>
+      <th>Final Implementation Date</th>
+      <th></th>
+
+    </tr>
+
+    <% @action_plans_yours.each do |ap| %>
+      <tr>
+        <td><% if ap.issue_id == nil %>
+            Issue Title
+          <% else %>
+            <%= Issue.find(ap.issue_id).title %>
+          <% end %>
+        </td>
+        <td><%= ap.description %></td>
+        <td><%= ActionPlanStatus.find(ap.ap_status_id).name %></td>
+        <td><%= ap.final_review_date %></td>
+        <td><%= ap.final_implementation_review_date %></td>
+        <td> 
+          <%= link_to "View", [:dept, ap], class: "btn btn-primary" %>
+        </td>
+      </tr>
+    <% end %>
+</table>
+<%= will_paginate @action_plans_yours %>

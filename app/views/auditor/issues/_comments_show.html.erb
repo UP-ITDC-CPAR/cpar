@@ -1,0 +1,42 @@
+<div class="row">
+<div class="span6">
+	<div class="row">
+		<div class="span3">
+		<%= form_for [:auditor, @issue_comment] do |f| %>
+			<%= f.hidden_field :issue_id, value: @issue.id %>
+			<%= f.hidden_field :user_id, value: current_user.id %>
+			<%= f.text_area :content, size: "30x5" %>
+			<%= f.submit "Add Comment", class: "btn btn-small btn-primary" %>
+		<% end %>
+		<h4>Issue Updates:</h4>
+		<hr>
+		<% if @issueupdates.any? %>
+			<% @issueupdates.each do |iu| %>
+				<%= iu.created_at.strftime("%b %d, %Y | %H:%M") %>
+				<p>	<%= iu.content %>
+				</p>
+			<% end %>
+		<% end %>
+		<%= will_paginate @issueupdates %>
+		</div>
+		<div class="span3">
+		<h4>Comments:</h4>
+		<hr>
+		<% if @issuecomments.any? %>
+			<% @issuecomments.each do |ic| %>
+				<%= ic.created_at.strftime("%b %d, %Y | %H:%M") %>
+				<% ic_user=User.find(ic.user_id) %>
+				<p><b><%= ic_user.name + ":" %></b>
+				  <% if ic_user.type_id != 6 %>
+				  	<%= "("+UserType.find(ic_user.type_id).name + ")" %>
+				  <% end %>
+				</p>
+				<p>	<%= ic.content %>
+				</p>
+			<% end %>
+		<% end %>
+		<%= will_paginate @issuecomments %>
+		</div>
+	</div>
+</div>
+</div>
