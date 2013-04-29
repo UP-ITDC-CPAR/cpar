@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
   	user = User.find_by_email(params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password]) # && user.account_enabled
       # Add condition here later - User account must be verified and enabled to signin
-      flash[:success] = 'Successfully loggged in!'
+      flash[:success] = 'Successfully logged in!'
       sign_in user
       redirect_back_or role_control_panel
     else
